@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "addflightmodal.h"
+#include <QTableView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,5 +22,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    addFlightModal *afm;
+public slots:
+    void recieveNode(QString numberOfFlight, QString nameOfAirline, QString onBoardNumber,QString departureAirport ,QString arrivialAirport);
 };
 #endif // MAINWINDOW_H
