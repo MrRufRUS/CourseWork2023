@@ -33,7 +33,7 @@ void addFlightModal::on_addButton_clicked()
     if (ui->nameOfAirline->text().size() == 0) {
         QMessageBox::warning(this, "Ошибка", "Название авиакомпании не может быть пустым");
         return;
-    }S
+    }
     if(!validateASCII(ui->nameOfAirline->text()))
     {
         QMessageBox::warning(this, "Ошибка", "Введено неверное название авиакомпанни");
@@ -78,4 +78,5 @@ void addFlightModal::on_addButton_clicked()
     //QMessageBox::information(this, "Добавление", "Добавление прошло успешно!");
 
 }
+
 
