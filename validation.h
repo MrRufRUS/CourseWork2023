@@ -4,7 +4,8 @@
 #include <QString>
 #include <QDebug>
 
-bool validateData(const QString& data)
+
+inline bool validateData(const QString& data)
 {
     // Создаем регулярное выражение для проверки наличия только заглавных английских букв и цифр
     QRegularExpression regex("^[A-Z0-9-]*$");
@@ -22,7 +23,7 @@ bool validateData(const QString& data)
         return false; // Данные не соответствуют требованиям
     }
 }
-bool validateASCII(const QString& data)
+inline bool validateASCII(const QString& data)
 {
     // Создаем регулярное выражение для проверки наличия только символов ASCII
     QRegularExpression regex("^[\\x00-\\x7F]*$");

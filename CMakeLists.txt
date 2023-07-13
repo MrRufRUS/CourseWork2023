@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         addflightmodal.ui
         validation.h
         workingwithtable.h
+        searchmodal.h searchmodal.cpp searchmodal.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

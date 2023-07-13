@@ -3,7 +3,8 @@
 
 #include <QString>
 #include <QTableWidget>
-
+#include <QString>
+#include <QFile>
 
 bool checkRepeat(QTableWidget*& table, QString& s0, int column) {
     for(int i = 0; i < table->rowCount(); i ++) {
@@ -22,6 +23,12 @@ void addNode(QTableWidget*& table, QString& s0, QString& s1, QString& s2, QStrin
     table->setItem(table->rowCount()-1, 4, new QTableWidgetItem(s4));
 }
 
+void parser(QString name, QTableWidget*& table, QVector<QVector<QString>>& data) {
+    QFile fin(name);
+    if (!fin.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+}
 
 
 #endif // WORKINGWITHTABLE_H
