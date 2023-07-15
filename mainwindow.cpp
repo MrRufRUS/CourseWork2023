@@ -71,5 +71,7 @@ void MainWindow::on_search_clicked()
 void MainWindow::on_open_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Открыть"), "./", tr("Text Files (*.txt)"));
+    //auto file = QFileDialog::getOpenFileUrl(this, tr("Открыть"), "./", tr("Text Files (*.txt)"));
+    qDebug() << fileName << "\n";
 }
 
