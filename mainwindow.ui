@@ -194,7 +194,7 @@
      <x>0</x>
      <y>0</y>
      <width>965</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -203,7 +203,6 @@
     </property>
     <addaction name="open"/>
     <addaction name="save"/>
-    <addaction name="create"/>
    </widget>
    <widget class="QMenu" name="debug">
     <property name="title">
@@ -237,7 +236,7 @@
   </action>
   <action name="save">
    <property name="text">
-    <string>Сохранить</string>
+    <string>Сохранить...</string>
    </property>
   </action>
   <action name="create">
