@@ -103,8 +103,6 @@ class HashTable {
     return -1;
 }
 void resize(double mulResize) {
-    if (size == defaultSize)
-        return;
     int newSize = int(size * mulResize);
     if (defaultSize >= newSize)
         newSize = defaultSize;
@@ -122,12 +120,13 @@ void resize(double mulResize) {
 }
 
 void add(Data& d) {
+    int steps = 0;
     if (busyNodes + 1 >= int(resizeGreater * size)) {
         resize(2);
     }
     int position = hashFunction1(d.key); // тут выбираю куда вставлять элемент
     if (!nodes[position].isHere) {
-        int check = find(position, KKK, d);
+        int check = find(position, KKK, d, steps);
         if (check < 0) {
             nodes[position] = Node(d);
             busyNodes++;
@@ -151,7 +150,7 @@ void add(Data& d) {
         };
     }
 }
-int find(int key, int k, Data& d) {
+int find(int key, int k, Data& d, int&steps) {
     int oldKey = key;
     bool isFound = false;
     int i = 0;
@@ -162,12 +161,14 @@ int find(int key, int k, Data& d) {
         if (nodes[key].isHere && nodes[key].d == d) {
             return key;
         }
+        steps++;
         i++;
     }
     //std::cout << endl;
     return -1;
 }
 void remove(Data& d) {
+    int steps = 0;
     if (busyNodes - 1 <= int(resizeLower * size)) {
         resize(0.5);
     }
@@ -177,7 +178,7 @@ void remove(Data& d) {
         busyNodes--;
     }
     else {
-        position = find(position, KKK, d);
+        position = find(position, KKK, d, steps);
         if (position >= 0) {
             nodes[position].isHere = false;
             busyNodes--;
@@ -193,16 +194,17 @@ void add(QVector<QString> in) {
     Data newEl = Data(in);
     add(newEl);
 }
-QVector<QVector<QString>> find(QString str) {
+QVector<QVector<QString>> find(QString str, int& steps) {
     QVector<QString> in;
     QVector<QVector<QString>> out;
     in.push_back(str);
     Data findEl = Data(in);
     int position = hashFunction1(findEl.key);
-    position = find(position, KKK, findEl);
+    steps++;
+    position = find(position, KKK, findEl, steps);
     if (position >= 0) {
         out.push_back(nodes[position].d.d);
-        std::cout << "Element is on position: " << position << std::endl;
+//        std::cout << "Element is on position: " << position << std::endl;
     }
     return out;
 }

@@ -32,9 +32,7 @@ private slots:
     void on_radioButton_5_clicked();
 
 signals:
-    void sentSearchedData(int, QVector<QString>);
-public slots:
-    void recieveDataToSeacrh(QVector<QVector<QString>>& dataToSearch);
+    void sentSearchedData(int, QString);
 private:
     Ui::searchModal *ui;
     QVector<QVector<QString>> dts;

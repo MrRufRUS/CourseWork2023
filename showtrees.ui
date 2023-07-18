@@ -13,97 +13,79 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QTextBrowser" name="trees">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>100</y>
-     <width>571</width>
-     <height>301</height>
-    </rect>
-   </property>
-   <property name="inputMethodHints">
-    <set>Qt::ImhMultiLine</set>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
-   </property>
-   <property name="placeholderText">
-    <string notr="true"/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>50</y>
-     <width>171</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>АВЛ-деревья</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>420</y>
-     <width>516</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QPushButton" name="tree0">
-      <property name="text">
-       <string>Номер рейса</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="tree1">
-      <property name="text">
-       <string>Назв. Авиак.</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="tree2">
-      <property name="text">
-       <string>Борт. номер</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="tree3">
-      <property name="text">
-       <string>Вылет</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="tree4">
-      <property name="text">
-       <string>Прилет</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="close">
-      <property name="text">
-       <string>Закрыть</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>АВЛ-деревья</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextBrowser" name="trees">
+     <property name="inputMethodHints">
+      <set>Qt::ImhMultiLine</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="placeholderText">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="tree0">
+       <property name="text">
+        <string>Номер рейса</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tree1">
+       <property name="text">
+        <string>Назв. Авиак.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tree2">
+       <property name="text">
+        <string>Борт. номер</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tree3">
+       <property name="text">
+        <string>Вылет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tree4">
+       <property name="text">
+        <string>Прилет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="close">
+       <property name="text">
+        <string>Закрыть</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

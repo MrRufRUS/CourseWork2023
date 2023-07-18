@@ -33,6 +33,7 @@ void searchModal::on_find_clicked()
                 return;
             }
             stringToSearch = ui->lineEdit->text();
+
             break;
         }
     case 1:
@@ -95,9 +96,7 @@ void searchModal::on_find_clicked()
     default:
         break;
     }
-
-    int steps = 0;
-
+    emit sentSearchedData(col, stringToSearch);
 }
 
 void searchModal::on_cancel_clicked()
@@ -105,10 +104,6 @@ void searchModal::on_cancel_clicked()
     this->close();
 }
 
-void searchModal::recieveDataToSeacrh(QVector<QVector<QString>>& dataToSearch)
-{
-    dts = dataToSearch;
-}
 
 
 void searchModal::on_radioButton_clicked()

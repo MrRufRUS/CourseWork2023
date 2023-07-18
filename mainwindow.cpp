@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->flights->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 MainWindow::~MainWindow()
@@ -29,17 +30,61 @@ void MainWindow::on_addFlight_clicked()
 void MainWindow::recieveNode(QString numberOfFlight, QString nameOfAirline, QString onBoardNumber, QString departureAirport, QString arrivialAirport)
 {
     if(checkRepeat(ui->flights, numberOfFlight, 0)) {
-        data.push_back(QVector<QString> {numberOfFlight, nameOfAirline, onBoardNumber, departureAirport, arrivialAirport});
-        addNode(ui->flights, numberOfFlight, nameOfAirline, onBoardNumber, departureAirport, arrivialAirport);
+        QVector<QString> listBuffer = {numberOfFlight, nameOfAirline, onBoardNumber, departureAirport, arrivialAirport};
+        a0.insert(listBuffer);
+        a1.insert(listBuffer);
+        a2.insert(listBuffer);
+        a3.insert(listBuffer);
+        a4.insert(listBuffer);
+        ht.add(listBuffer);
+        data.push_back(listBuffer);
+        addNode(ui->flights, listBuffer);
     }
     else {
         QMessageBox::warning(this, "Ошибка", "Нельзя добавить один и тот же рейс");
     }
 }
 
-void MainWindow::recieveSearchResoults(int steps, QVector<QString> resoult)
+void MainWindow::recieveSearchResoults(int searchCase,QString toSearch)
 {
+    QVector<QVector<QString>> searchedData;
+    int steps = 0;
+    switch (searchCase){
+        case 0: {
+            searchedData = ht.find(toSearch, steps);
+            break;
+        }
+        case 1: {
+            searchedData = a1.recursiveSearch(toSearch, steps);
+            break;
+        }
+        case 2: {
+            searchedData = a2.recursiveSearch(toSearch, steps);
+            break;
+        }
+        case 3: {
+            searchedData = a3.recursiveSearch(toSearch, steps);
+            break;
+        }
+        case 4: {
+            searchedData = a4.recursiveSearch(toSearch, steps);
+            break;
+        }
+    }
 
+    resoults = ui->flights;
+    resoults->setRowCount(0);
+    if (searchedData.isEmpty()) {
+            QMessageBox::information(this, "Результаты поиска", "Элементов с заданным ключом не найдено");
+            return;
+    }
+    for(int i = 0; i < searchedData.size(); i++) {
+//            qDebug() << searchedData.at(i);
+            addNode(resoults, searchedData.at(i));
+    }
+    swap(resoults, ui->flights);
+    ui->statusBar->showMessage(QString("Количество шагов поиска: " + QString::number(steps)), 10000);
+    ui->removeFlight->blockSignals(true);
 }
 
 void MainWindow::on_removeFlight_clicked()
@@ -64,77 +109,85 @@ void MainWindow::on_search_clicked()
 {
     srch = new searchModal(this);
     connect(srch, &searchModal::sentSearchedData, this, &MainWindow::recieveSearchResoults);
-    connect(this, &MainWindow::sentDataToSearch, srch, &searchModal::recieveDataToSeacrh);
-    emit sentDataToSearch(data);
     srch->setModal(true);
     srch->exec();
 
 }
 
-
+void MainWindow::refillTable() {
+    ui->flights->setRowCount(0);
+    for(auto el : data) {
+        addNode(ui->flights, el);
+    }
+    ui->removeFlight->blockSignals(false);
+}
 void MainWindow::on_open_triggered()
 {
-    data.clear();
-    a0 = AVLTree(0);
-    a0 = AVLTree(1);
-    a0 = AVLTree(2);
-    a0 = AVLTree(3);
-    a0 = AVLTree(4);
-    ht = HashTable(20);
-    ui->flights->setRowCount(0);
     QString fileName = QFileDialog::getOpenFileName(this, tr("Открыть"), "./", tr("Text Files (*.txt)"));
     //auto file = QFileDialog::getOpenFileUrl(this, tr("Открыть"), "./", tr("Text Files (*.txt)"));
-    qDebug() << fileName << "\n";
+    ui->statusBar->showMessage(QString("Открытие файла: " + fileName), 10000);
     QFile fin(fileName);
     fin.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(&fin);
     QString buffer;
+
+    if(fileName.isEmpty())
+        return;
+    data.clear();
+    a0 = AVLTree(0);
+    a1 = AVLTree(1);
+    a2 = AVLTree(2);
+    a3 = AVLTree(3);
+    a4 = AVLTree(4);
+    ht = HashTable(20);
+    ui->flights->setRowCount(0);
+
     if(fin.isOpen()) {
         while (!fin.atEnd()) {
             buffer = fin.readLine().trimmed();
             QVector<QString> listBuffer = buffer.split(";").toVector();
             if (listBuffer.at(0).size() < 5) {
-                QMessageBox::warning(this, "Ошибка", "Номер рейса должен содержать минимум 5 символов");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             if(!validateData(listBuffer.at(0))) {
-                QMessageBox::warning(this, "Ошибка", "Номер рейса должен содержать только заглавные латинские литеры, цифры и \"-\"");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             if (listBuffer.at(1).size() == 0) {
-                QMessageBox::warning(this, "Ошибка", "Название авиакомпании не может быть пустым");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             if(!validateASCII(listBuffer.at(1)))
             {
-                QMessageBox::warning(this, "Ошибка", "Введено неверное название авиакомпанни");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             if (listBuffer.at(2).size() == 0) {
-                QMessageBox::warning(this, "Ошибка", "Бортовой номер не может быть пустым");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             if(!validateData(listBuffer.at(2))) {
-                QMessageBox::warning(this, "Ошибка", "Бортовой номер должен содержать только заглавные латинские литеры, цифры и \"-\"");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             if (listBuffer.at(3).size() != 4) {
-                QMessageBox::warning(this, "Ошибка", "Код ИКАО аэропорта вылета должен содержать 4 символа");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             for (auto ch : listBuffer.at(3)) {
                 if(!((ch.unicode() <= 90 && ch.unicode() >= 65) || (ch.unicode() <= 57 && ch.unicode() >= 48))) {
-                    QMessageBox::warning(this, "Ошибка", "ИКАО аэропорта отлёта должен содержать только заглавные латинские литеры и цифры");
+                    QMessageBox::warning(this, "Ошибка", "Неверные данные");
                     return;
                 }
             }
             if (listBuffer.at(4).size() != 4) {
-                QMessageBox::warning(this, "Ошибка", "Код ИКАО аэропорта прилета должен содержать 4 символа");
+                QMessageBox::warning(this, "Ошибка", "Неверные данные");
                 return;
             }
             for (auto ch : listBuffer.at(4)) {
                 if(!((ch.unicode() <= 90 && ch.unicode() >= 65) || (ch.unicode() <= 57 && ch.unicode() >= 48))) {
-                    QMessageBox::warning(this, "Ошибка", "ИКАО аэропорта прилёта должен содержать только заглавные латинские литеры и цифры");
+                    QMessageBox::warning(this, "Ошибка", "Неверные данные");
                     return;
                 }
             }
@@ -183,6 +236,8 @@ void MainWindow::on_save_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Сохранить"), "./", tr("Text Files (*.txt)"));
     //auto file = QFileDialog::getOpenFileUrl(this, tr("Открыть"), "./", tr("Text Files (*.txt)"));
     qDebug() << fileName << "\n";
+    if(fileName.isEmpty())
+        return;
     QFile fout(fileName);
     fout.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&fout);
@@ -192,5 +247,12 @@ void MainWindow::on_save_triggered()
         }
     }
     fout.close();
+    ui->statusBar->showMessage(QString("Сохрание в файл: " + fileName), 10000);
+}
+
+
+void MainWindow::on_cleanSearch_clicked()
+{
+    refillTable();
 }
 

@@ -23,9 +23,9 @@ set(PROJECT_SOURCES
         validation.h
         workingwithtable.h
         searchmodal.h searchmodal.cpp searchmodal.ui
-        avltree.h avltree.cpp
+        avltree.h
+        list.h
         hashtable.h
-        avltree-test.h
         showhashfunction.h showhashfunction.cpp showhashfunction.ui
         showtrees.h showtrees.cpp showtrees.ui
 )

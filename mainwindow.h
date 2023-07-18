@@ -2,13 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QHeaderView>
 #include "addflightmodal.h"
 #include "searchmodal.h"
 #include "showhashfunction.h"
 #include "showtrees.h"
-#include "avltree-test.h"
+#include "avltree.h"
 #include "hashtable.h"
-#include <QTableView>
+#include <QTableWidget>
 #include <QVector>
 #include <QMessageBox>
 #include <QDebug>
@@ -45,9 +46,12 @@ private slots:
 
     void on_save_triggered();
 
+
+    void on_cleanSearch_clicked();
+
 private:
     QVector<QVector<QString>> data; // массив сходных данных
-
+    void refillTable();
     Ui::MainWindow *ui;
     addFlightModal *afm; // модальное окно добавления записи
     AVLTree a0 = AVLTree(0);
@@ -59,10 +63,9 @@ private:
     searchModal *srch;
     ShowHashFunction *shf;
     ShowTrees *st;
+    QTableWidget* resoults;
 public slots:
     void recieveNode(QString numberOfFlight, QString nameOfAirline, QString onBoardNumber,QString departureAirport ,QString arrivialAirport);
-    void recieveSearchResoults(int steps, QVector<QString> resoult);
-signals:
-    void sentDataToSearch(QVector<QVector<QString>>&);
+    void recieveSearchResoults(int searchCase, QString toSearch);
 };
 #endif // MAINWINDOW_H
